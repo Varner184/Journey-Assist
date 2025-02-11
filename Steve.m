@@ -1,6 +1,6 @@
-%% Ready Functions
-%% brick = ConnectBrick('STEVE')
-%% Execute before running first time
+% Ready Functions
+% brick = ConnectBrick('STEVE')
+% Execute before running first time
 clc;
 
 % Play sound on startup - Acknowledge the robot is ready 
@@ -17,7 +17,7 @@ brick.GyroCalibrate(3);
 currAngle = 0;
 speed = input('Set a speed (1-100): ');
 
-%% Control Variables
+% Control Variables
 manualMode = false;
 leftMotor = -1 * speed;
 rightMotor = -1 * speed * 1.02;
@@ -25,7 +25,7 @@ leftSpeed = -25;
 rightSpeed = -25 * 0.97;
 turnPause = 1.65;
 
-%% Detection Variables
+% Detection Variables
 autoMoveForward = true;
 canTurnRight = false;
 lastTurnAngle = 0;
@@ -38,7 +38,7 @@ while 1
 
   pause(0.1);
 
-  %% Manual Control Implementation
+  % Manual Control Implementation
 if manualMode == true
   switch key
 
@@ -111,7 +111,7 @@ if manualMode == true
 
   end
 
-  %% Wall Detection - Detect when the robot has hit a wall
+  % Wall Detection - Detect when the robot has hit a wall
   buttonPress = brick.TouchPressed(1);
     if buttonPress == 1
       autoMoveForward = false;
@@ -159,7 +159,7 @@ if manualMode == true
       end
    end
 
-  %% Color Sensor 
+  % Color Sensor 
 
   color = brick.ColorCode(2);
 
