@@ -3,7 +3,7 @@
 %% Execute before running first time
 clc;
 
-% Play sound on startup - Acknowledge ready and ask for manual speed
+% Play sound on startup - Acknowledge the robot is ready 
 brick.SetColorMode(2,2);
 brick.playTone(10,100,100);
 pause(0.5);
@@ -11,11 +11,13 @@ brick.playTone(10,300,200);
 pause(0.5);
 brick.playTone(10,500, 200);
 disp('STEVE is ready.');
+
+% Calibrate turn sensor and set speed to desired speed
 brick.GyroCalibrate(3);
 currAngle = 0;
 speed = input('Set a speed (1-100): ');
 
-%% Control Variable
+%% Control Variables
 manualMode = false;
 leftMotor = -1 * speed;
 rightMotor = -1 * speed * 1.02;
@@ -23,11 +25,12 @@ leftSpeed = -25;
 rightSpeed = -25 * 0.97;
 turnPause = 1.65;
 
-%% Detection Variable
+%% Detection Variables
 autoMoveForward = true;
 canTurnRight = false;
 lastTurnAngle = 0;
 
+% Initialize keyboard
 global key;
 InitKeyboard();
 
@@ -35,7 +38,7 @@ while 1
 
   pause(0.1);
 
-  %% Manual Control
+  %% Manual Control Implementation
 if manualMode == true
   switch key
 
@@ -108,7 +111,7 @@ if manualMode == true
 
   end
 
-  %% Wall Detection
+  %% Wall Detection - Detect when the robot has hit a wall
   buttonPress = brick.TouchPressed(1);
     if buttonPress == 1
       autoMoveForward = false;
@@ -161,7 +164,7 @@ if manualMode == true
   color = brick.ColorCode(2);
 
   switch color
-      %Red
+      %Red - Stop for 1 second and continue
       case 5
           if manualMode == false
               disp('Red detected - Stop for 1 seconds and continue');
@@ -173,7 +176,7 @@ if manualMode == true
               pause(1);
               autoMoveForward = true;
           end
-      %Green - Dropoff
+      %Green - Dropoff site
       case 3
           if manualMode == false
               disp('Green detected - Manual mode enabled');
@@ -185,7 +188,7 @@ if manualMode == true
               brick.playTone(50,300,150);
               manualMode = true;
           end
-      %Blue - Pickup
+      %Blue - Pickup site
       case 2
           if manualMode == false
               disp('Blue detected - Manual mode enabled');
@@ -195,7 +198,7 @@ if manualMode == true
               brick.playTone(50,300,150);
               manualMode = true;
           end
-  otherwise % Autonomous Navigation
+  otherwise % Autonomous Navigation Implementation
        if autoMoveForward && manualMode == false
           color = brick.ColorCode(2);
           distanceRight = brick.UltrasonicDist(4);
